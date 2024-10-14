@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04-ppc64le
     permissions:
       pages: write
       id-token: write
@@ -20,17 +20,18 @@ jobs:
         with:
           repository: d3/d3.github.com
           path: build/d3.github.com
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v3
         with:
           node-version: 20
+          architecture: ppc64le
           cache: 'yarn'
       - run: yarn --frozen-lockfile
       - run: yarn prepublishOnly
       - run: yarn docs:build
-      - uses: actions/configure-pages@v4
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v3
+      - uses: actions/upload-pages-artifact@v2
         with:
           path: docs/.vitepress/dist
       - name: Deploy
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v3
